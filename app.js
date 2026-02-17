@@ -550,11 +550,11 @@ function saveActivePresetIndex() {
 
 function loadPresetsAndState() {
   const initialDefaultPresets = [
-      { ...defaultPreset, name: 'Preset 1', description: 'A standard default preset.' },
-      { ...defaultPreset, name: 'Preset 2', description: 'From 10Hz down to 5Hz over 30 minutes.', startBeatHz: 10, stages: [{ beat: 5, hours: 0, minutes: 30 }] },
-      { ...defaultPreset, name: 'Preset 3', description: 'From 4Hz up to 8Hz over 45 minutes.', startBeatHz: 4, stages: [{ beat: 8, hours: 0, minutes: 45 }] },
-      { ...defaultPreset, name: 'Preset 4', description: 'Low carrier, short session.', carrierHz: 200, startBeatHz: 6, totalPoints: 2, stages: [{ beat: 12, hours: 0, minutes: 20 }] },
-      { ...defaultPreset, name: 'Preset 5', description: 'High carrier, multi-stage session.', carrierHz: 600, startBeatHz: 8, totalPoints: 3, stages: [{ beat: 4, hours: 0, minutes: 15 }, { beat: 10, hours: 0, minutes: 15 }] },
+      { ...defaultPreset, name: 'P1', description: 'A standard default preset.' },
+      { ...defaultPreset, name: 'P2', description: 'From 10Hz down to 5Hz over 30 minutes.', startBeatHz: 10, stages: [{ beat: 5, hours: 0, minutes: 30 }] },
+      { ...defaultPreset, name: 'P3', description: 'From 4Hz up to 8Hz over 45 minutes.', startBeatHz: 4, stages: [{ beat: 8, hours: 0, minutes: 45 }] },
+      { ...defaultPreset, name: 'P4', description: 'Low carrier, short session.', carrierHz: 200, startBeatHz: 6, totalPoints: 2, stages: [{ beat: 12, hours: 0, minutes: 20 }] },
+      { ...defaultPreset, name: 'P5', description: 'High carrier, multi-stage session.', carrierHz: 600, startBeatHz: 8, totalPoints: 3, stages: [{ beat: 4, hours: 0, minutes: 15 }, { beat: 10, hours: 0, minutes: 15 }] },
     ];
 
   const storedPresets = localStorage.getItem('brainwavePresets');
@@ -568,7 +568,10 @@ function loadPresetsAndState() {
       savePresets(); // Save the updated presets to localStorage
     }
     // Ensure all loaded presets have a description and beatMode field
-    presets.forEach(p => {
+    presets.forEach((p, i) => {
+        if (p.name === `Preset ${i + 1}`) {
+            p.name = `P${i + 1}`;
+        }
         if (p.description === undefined) {
             p.description = '';
         }
