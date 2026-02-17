@@ -31,7 +31,7 @@
     button.secondary { background:#334155; }
     button.preset-btn.active { background: #60a5fa; }
     .preset-btn {
-      width: 44px;
+      flex: 1;
       text-align: center;
       white-space: nowrap;
       padding: .3rem .2rem;
@@ -108,7 +108,7 @@
           <canvas id="sched" width="1000" height="350"></canvas>
                     <div class="row" style="margin-top:.5rem">
             <button id="togglePlaybackBtn" title="Click to Start/Pause. Double-click or long-press to Stop.">Start</button>
-            <div id="presetsContainer" class="row" style="flex-grow: 1; justify-content: center;"></div>
+            <div id="presetsContainer" class="row" style="flex-grow: 1; flex-wrap: nowrap;"></div>
           </div>
           <p id="presetDescription" style="margin-top:.5rem; color: #94a3b8;"></p>
           <div class="row" style="justify-content: space-between; align-items: center; margin-top:.5rem;">
