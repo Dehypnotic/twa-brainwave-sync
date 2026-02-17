@@ -1040,3 +1040,10 @@ updateUIFromPreset(presets[activePresetIndex]); // Populate UI with active prese
 renderPresetButtons(); // Render preset buttons
 updatePreview(); // Draw initial preview
 requestAnimationFrame(loop);
+
+window.addEventListener('resize', () => {
+    updatePreview();
+    if (engine && engine.started) {
+        drawSchedule(sched, engine.opts, engine.elapsed());
+    }
+});
