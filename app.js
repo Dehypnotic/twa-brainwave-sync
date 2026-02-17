@@ -832,7 +832,6 @@ function updateUIFromPreset(preset) {
   q('startBeat').value = preset.startBeatHz;
   q('endAction').value = preset.endAction;
   q('exportSampleRate').value = preset.exportSampleRate;
-  q('mute').checked = preset.muted;
   beatModeInput.value = preset.beatMode || 'isochronic'; // Set beat mode
   volumeInput.value = preset.volume ?? 1.0;
   volumeLabel.textContent = `${Math.round((preset.volume ?? 1.0) * 100)}%`;
@@ -861,7 +860,6 @@ function updateActivePresetFromUI() {
   currentPreset.startBeatHz = +q('startBeat').value;
   currentPreset.endAction = q('endAction').value;
   currentPreset.exportSampleRate = +q('exportSampleRate').value;
-  currentPreset.muted = q('mute').checked;
   currentPreset.beatMode = beatModeInput.value; // Get beat mode
   currentPreset.volume = +volumeInput.value;
 
@@ -920,7 +918,7 @@ Beat now: ${opts.startBeatHz.toFixed(2)} Hz`;
 }
 
 // --- Event Listeners ---
-[q('carrier'), q('startBeat'), endActionInput, exportSampleRateInput, q('mute'), singlePointHoursInput, singlePointMinutesInput, beatModeInput].forEach(input => {
+[q('carrier'), q('startBeat'), endActionInput, exportSampleRateInput, singlePointHoursInput, singlePointMinutesInput, beatModeInput].forEach(input => {
     input.addEventListener('change', () => {
         updateActivePresetFromUI();
         updatePreview();
@@ -944,8 +942,6 @@ editPointSelector.addEventListener('change', () => {
 });
 
 q('saveBtn').addEventListener('click', exportToWav);
-
-q('mute').addEventListener('change', e => { if (engine) engine.setMute(e.target.checked); });
 
 volumeInput.addEventListener('input', () => {
     const vol = +volumeInput.value;
