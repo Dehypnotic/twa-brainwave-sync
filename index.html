@@ -96,15 +96,21 @@
       .card { border-radius: 0; }
     }
 
+    @media (orientation: landscape) {
+      .grid { grid-template-columns: 1.2fr 0.8fr; gap: 0.5rem; }
+      h1 { font-size: 1.25rem; margin-bottom: 0.5rem; }
+    }
+
     @media (orientation: landscape) and (max-height: 500px) {
       .card { padding: 0.5rem; }
       h1 { display: none; }
       .grid { grid-template-columns: 1.2fr 0.8fr; gap: 0.5rem; }
       .param-row { padding: 0.05rem 0; font-size: 0.85rem; }
-      .input-wrapper { padding: 0.2rem 0.4rem; }
+      .input-wrapper { padding: 0.15rem 0.3rem; }
       input[type='number'] { font-size: 0.85rem; width: 3.5rem; }
-      button { padding: 0.2rem 0.4rem; font-size: 0.85rem; }
-      canvas { min-height: 120px; }
+      button { padding: 0.15rem 0.3rem; font-size: 0.85rem; }
+      canvas { min-height: 100px; }
+      .preset-btn { padding: 0.15rem 0.1rem; }
     }
 
     /* Modal Styles */
