@@ -52,14 +52,16 @@
       display: grid;
       grid-template-columns: 1fr;
       gap: 1rem;
-      align-items: start;
+      align-items: stretch;
       flex: 1;
+      min-height: 0;
     }
 
     .grid > div {
       display: flex;
       flex-direction: column;
       height: 100%;
+      min-height: 0;
     }
 
     /* New Parameter Styles */
@@ -92,6 +94,17 @@
     @media (max-width: 1023px) {
       body { padding: 0; }
       .card { border-radius: 0; }
+    }
+
+    @media (orientation: landscape) and (max-height: 500px) {
+      .card { padding: 0.5rem; }
+      h1 { display: none; }
+      .grid { grid-template-columns: 1.2fr 0.8fr; gap: 0.5rem; }
+      .param-row { padding: 0.05rem 0; font-size: 0.85rem; }
+      .input-wrapper { padding: 0.2rem 0.4rem; }
+      input[type='number'] { font-size: 0.85rem; width: 3.5rem; }
+      button { padding: 0.2rem 0.4rem; font-size: 0.85rem; }
+      canvas { min-height: 120px; }
     }
 
     /* Modal Styles */
