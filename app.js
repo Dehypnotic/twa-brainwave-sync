@@ -444,7 +444,6 @@ const q = id => document.getElementById(id);
 // --- Global State & UI Elements ---
 const sched = q('sched');
 const readout = q('readout');
-const readoutLand = q('readout-land');
 const pointEditor = q('pointEditor');
 const totalPointsInput = q('totalPoints');
 const editPointSelector = q('editPointSelector');
@@ -459,11 +458,8 @@ const exportSampleRateInput = q('exportSampleRate');
 const togglePlaybackBtn = q('togglePlaybackBtn');
 const presetDescription = q('presetDescription');
 const beatModeInput = q('beatMode');
-const beatModeInputLand = q('beatMode-land');
 const volumeInput = q('volume');
-const volumeInputLand = q('volume-land');
 const volumeLabel = q('volumeLabel');
-const volumeLabelLand = q('volumeLabel-land');
 
 // Modal elements
 const renamePresetModal = q('renamePresetModal');
@@ -837,13 +833,8 @@ function updateUIFromPreset(preset) {
   q('endAction').value = preset.endAction;
   q('exportSampleRate').value = preset.exportSampleRate;
   beatModeInput.value = preset.beatMode || 'isochronic'; // Set beat mode
-  beatModeInputLand.value = preset.beatMode || 'isochronic';
-  const vol = preset.volume ?? 1.0;
-  volumeInput.value = vol;
-  volumeInputLand.value = vol;
-  const volPct = `${Math.round(vol * 100)}%`;
-  volumeLabel.textContent = volPct;
-  volumeLabelLand.textContent = volPct;
+  volumeInput.value = preset.volume ?? 1.0;
+  volumeLabel.textContent = `${Math.round((preset.volume ?? 1.0) * 100)}%`;
   presetDescription.textContent = preset.description || '';
 
   totalPointsInput.value = preset.totalPoints;
@@ -869,24 +860,8 @@ function updateActivePresetFromUI() {
   currentPreset.startBeatHz = +q('startBeat').value;
   currentPreset.endAction = q('endAction').value;
   currentPreset.exportSampleRate = +q('exportSampleRate').value;
-  
-  // Update both sets of controls to match
-  const isLandscape = window.innerWidth > window.innerHeight;
-  if (isLandscape) {
-    currentPreset.beatMode = beatModeInputLand.value;
-    currentPreset.volume = +volumeInputLand.value;
-    beatModeInput.value = currentPreset.beatMode;
-    volumeInput.value = currentPreset.volume;
-  } else {
-    currentPreset.beatMode = beatModeInput.value;
-    currentPreset.volume = +volumeInput.value;
-    beatModeInputLand.value = currentPreset.beatMode;
-    volumeInputLand.value = currentPreset.volume;
-  }
-  
-  const volPct = `${Math.round(currentPreset.volume * 100)}%`;
-  volumeLabel.textContent = volPct;
-  volumeLabelLand.textContent = volPct;
+  currentPreset.beatMode = beatModeInput.value; // Get beat mode
+  currentPreset.volume = +volumeInput.value;
 
   currentPreset.totalPoints = +totalPointsInput.value;
   currentPreset.singlePointHours = +singlePointHoursInput.value;
@@ -937,15 +912,13 @@ function updatePreview() {
     if (engine && engine.started) return;
     const opts = getOpts();
     drawSchedule(sched, opts, 0);
-    const text = `Running: no
+    readout.textContent = `Running: no
 Elapsed: 0.0 min
 Beat now: ${opts.startBeatHz.toFixed(2)} Hz`;
-    readout.textContent = text;
-    readoutLand.textContent = text;
 }
 
 // --- Event Listeners ---
-[q('carrier'), q('startBeat'), endActionInput, exportSampleRateInput, singlePointHoursInput, singlePointMinutesInput, beatModeInput, beatModeInputLand].forEach(input => {
+[q('carrier'), q('startBeat'), endActionInput, exportSampleRateInput, singlePointHoursInput, singlePointMinutesInput, beatModeInput].forEach(input => {
     input.addEventListener('change', () => {
         updateActivePresetFromUI();
         updatePreview();
@@ -970,25 +943,9 @@ editPointSelector.addEventListener('change', () => {
 
 q('saveBtn').addEventListener('click', exportToWav);
 
-volumeInputLand.addEventListener('input', () => {
-    const vol = +volumeInputLand.value;
-    volumeInput.value = vol;
-    const volPct = `${Math.round(vol * 100)}%`;
-    volumeLabel.textContent = volPct;
-    volumeLabelLand.textContent = volPct;
-    if (engine) engine.setVolume(vol);
-    updateActivePresetFromUI();
-});
-
 volumeInput.addEventListener('input', () => {
     const vol = +volumeInput.value;
-    volumeInputLand.value = vol;
-    const volPct = `${Math.round(vol * 100)}%`;
-    volumeLabel.textContent = volPct;
-    volumeLabelLand.textContent = volPct;
-    if (engine) engine.setVolume(vol);
-    updateActivePresetFromUI();
-});
+    volumeLabel.textContent = `${Math.round(vol * 100)}%`;
     if (engine) engine.setVolume(vol);
     updateActivePresetFromUI();
 });
@@ -1066,11 +1023,9 @@ togglePlaybackBtn.addEventListener('click', async (e) => {
 function loop() {
   if (engine && engine.started) {
     drawSchedule(sched, engine.opts, engine.elapsed());
-    const text = `Running: yes
+    readout.textContent = `Running: yes
 Elapsed: ${(engine.elapsed()/60).toFixed(1)} min
 Beat now: ${getBeatAt(engine.elapsed(), engine.opts).toFixed(2)} Hz`;
-    readout.textContent = text;
-    readoutLand.textContent = text;
   }
   requestAnimationFrame(loop);
 }
