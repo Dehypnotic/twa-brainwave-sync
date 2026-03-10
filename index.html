@@ -97,14 +97,23 @@
     }
 
     @media (orientation: landscape) {
-      .grid { grid-template-columns: 1.2fr 0.8fr; gap: 0.5rem; }
+      .grid { grid-template-columns: 1fr 1fr; gap: 0.5rem; }
+      .grid > div:first-child { display: contents; }
+      .grid > div:last-child { display: contents; }
+      
+      canvas { grid-column: 1; grid-row: 1; }
+      .row:has(#togglePlaybackBtn) { grid-column: 1; grid-row: 2; }
+      #presetDescription { grid-column: 1; grid-row: 3; }
+      #statusControls { grid-column: 2; grid-row: 3; margin-top: 0 !important; }
+      #paramsContainer { grid-column: 2; grid-row: 1 / span 2; }
+      
+      #statusControls .input-wrapper:has(#volume) { margin: 0 0.5rem !important; }
       h1 { font-size: 1.25rem; margin-bottom: 0.5rem; }
     }
 
     @media (orientation: landscape) and (max-height: 500px) {
       .card { padding: 0.5rem; }
       h1 { display: none; }
-      .grid { grid-template-columns: 1.2fr 0.8fr; gap: 0.5rem; }
       .param-row { padding: 0.05rem 0; font-size: 0.85rem; }
       .input-wrapper { padding: 0.15rem 0.3rem; }
       input[type='number'] { font-size: 0.85rem; width: 3.5rem; }
@@ -147,7 +156,7 @@
             <div id="presetsContainer" class="row" style="flex-grow: 1; flex-wrap: nowrap;"></div>
           </div>
           <p id="presetDescription" style="margin-top:.5rem; color: #94a3b8;"></p>
-          <div class="row" style="justify-content: space-between; align-items: center; margin-top:.5rem;">
+          <div id="statusControls" class="row" style="justify-content: space-between; align-items: center; margin-top:.5rem;">
             <pre id="readout" style="margin:0;"></pre>
             <div class="input-wrapper" style="flex-grow: 1; margin: 0 1rem; display: flex; align-items: center; gap: 0.5rem; min-width: 100px;">
               <span id="volumeLabel" class="param-unit" style="font-size: 0.8rem; min-width: 2.2rem;">100%</span>
